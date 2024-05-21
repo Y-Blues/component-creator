@@ -1,9 +1,8 @@
 #app="all"
-from ycappuccino.core.api import IActivityLogger, IService, YCappuccino
-from ycappuccino.storage.api import IManager
-from ycappuccino.endpoints.api import IJwt
-from ycappuccino.core.decorator_app import App
-from ycappuccino.core.framework import listener_factory
+from ycappuccino.api.core import IActivityLogger, IService, YCappuccino
+from ycappuccino.api.storage import IManager
+from ycappuccino.api.endpoints import IJwt
+from ycappuccino.api.core.decorator_app import App
 import logging
 from pelix.ipopo.decorators import ComponentFactory, Requires, Validate, Invalidate, Provides, Instantiate, BindField, UnbindField
 import hashlib
