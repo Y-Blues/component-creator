@@ -22,9 +22,13 @@ _logger = logging.getLogger(__name__)
 
 @ComponentFactory("Http")
 @Provides(
-    specifications=[YCappuccinoRemote.name, IHttp.name, IComponentServiceFactory.name]
+    specifications=[
+        YCappuccinoRemote.__name__,
+        IHttp.__name__,
+        IComponentServiceFactory.__name__,
+    ]
 )
-@Requires("_log", IActivityLogger.name, spec_filter="'(name=main)'")
+@Requires("_log", IActivityLogger.__name__, spec_filter="'(name=main)'")
 @App(name="ycappuccino.component_creator")
 class ComponentHttp(IHttp):
     def __init__(self):

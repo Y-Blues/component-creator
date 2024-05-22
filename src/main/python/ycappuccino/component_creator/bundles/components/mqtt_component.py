@@ -1,33 +1,37 @@
-#app="all"
+# app="all"
 from ycappuccino.core.api import IActivityLogger, IService, YCappuccino
 from ycappuccino.storage.api import IManager
 from ycappuccino.endpoints.api import IJwt
+
+from ycappuccino.api.component_creator import IComponentServiceFactory, IMqtt
 from ycappuccino.core.decorator_app import App
 
 import logging
-from pelix.ipopo.decorators import ComponentFactory, Requires, Validate, Invalidate, Property, Provides, Instantiate, BindField, UnbindField
-import hashlib
+from pelix.ipopo.decorators import (
+    ComponentFactory,
+    Requires,
+    Validate,
+    Invalidate,
+    Provides,
+)
 
-from ycappuccino.rest_app_base.api import ITenantTrigger
-from ycappuccino.storage.api import ITrigger
 
-from ycappuccino.component_creator.api import  IComponentServiceFactory
-from ycappuccino.component_creator.bundles.components.api import IMqtt
-# Import smtplib for the actual sending function
-import smtplib
-
-# Import the email modules we'll need
-from email.message import EmailMessage
 _logger = logging.getLogger(__name__)
 
 
-@ComponentFactory('Mqtt')
-@Provides(specifications=[YCappuccino.name, IMqtt.name, IComponentServiceFactory.name])
+@ComponentFactory("Mqtt")
+@Provides(
+    specifications=[
+        YCappuccino.__name__,
+        IMqtt.__name__,
+        IComponentServiceFactory.__name__,
+    ]
+)
 @Requires("_log", IActivityLogger.name, spec_filter="'(name=main)'")
 @App(name="ycappuccino.component_creator")
 class ComponentMqtt(IMqtt):
     def __init__(self):
-        super(IMqtt, self).__init__();
+        super(IMqtt, self).__init__()
         self._host = None
         self._port = None
 
@@ -38,12 +42,13 @@ class ComponentMqtt(IMqtt):
 
         # me == the sender's email address
         # you == the recipient's email address
-        msg['Subject'] = a_subject
-        msg['From'] = a_from
-        msg['To'] = a_to
-        #TODO test with TLS etc...
+        msg["Subject"] = a_subject
+        msg["From"] = a_from
+        msg["To"] = a_to
+        # TODO test with TLS etc...
         with smtplib.SMTP("{}:{}".format(self.host, self.port)) as s:
             s.send_message(msg)
+
     @Validate
     def validate(self, context):
         self._log.info("ComponentMail validating")

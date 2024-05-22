@@ -1,7 +1,7 @@
-from ycappuccino.core.models.decorators  import Item, Property, Empty
-from ycappuccino.storage.models.model import Model
-
+from ycappuccino.api.decorators import Item, Property, Empty
+from ycappuccino.api.models import Model
 from ycappuccino.core.decorator_app import App
+
 
 @Empty()
 def empty():
@@ -9,8 +9,15 @@ def empty():
     _empty.id("client_pyscript_core")
     return _empty
 
+
 @App(name="ycappuccino.component_creator")
-@Item(collection="component_creator",name="external_service", plural="component_creator",  secure_write=True, secure_read=True)
+@Item(
+    collection="component_creator",
+    name="external_service",
+    plural="component_creator",
+    secure_write=True,
+    secure_read=True,
+)
 class ExternalService(Model):
     def __init__(self, a_dict=None):
         super().__init__(a_dict)
@@ -20,7 +27,6 @@ class ExternalService(Model):
         self._active = False
         self._component_error = None
         self._configuration = None
-
 
     @Property(name="factory_id")
     def factory_id(self, a_value):
@@ -36,6 +42,7 @@ class ExternalService(Model):
     @Property(name="name")
     def name(self, a_value):
         self._name = a_value
+
     @Property(name="active")
     def active(self, a_value):
         self._active = a_value
@@ -50,5 +57,6 @@ class ExternalService(Model):
     @Property(name="configuration")
     def configuration(self, a_value):
         self._configuration = a_value
+
 
 empty()
